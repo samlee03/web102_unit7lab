@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../client'
+
 import Card from '../components/Card';
 
 const ReadPosts = (props) => {
@@ -6,7 +8,17 @@ const ReadPosts = (props) => {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        setPosts(props.data);
+        const fetchPost = async () => {
+            const {data} = await supabase
+            .from('Posts')
+            .select()
+            .order('created_at', { ascending: true })
+            
+            // set state of posts
+            setPosts(data);
+        }
+        fetchPost()
+        // setPosts(props.data);
     }, [props]);
     
     return (
