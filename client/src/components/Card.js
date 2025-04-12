@@ -3,12 +3,21 @@ import { useState } from 'react'
 import './Card.css'
 import more from './more.png'
 import { Link } from 'react-router-dom'
+import { supabase } from '../client'
+
 
 
 const Card = (props) =>  {
+  const id = props.id
+  const [count, setCount] = useState(props.count)
+  const updateCount = async (event) => {
+    event.preventDefault();
 
-  const [count, setCount] = useState(0)
-  const updateCount = () => {
+    await supabase
+    .from("Posts")
+    .update({betCount: count + 1})
+    .eq('id', id)
+
     setCount((count) => count + 1);
   }
 
